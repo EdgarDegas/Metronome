@@ -11,29 +11,27 @@ import Foundation
 /// already resumed (noted by https://github.com/SiftScience/sift-ios/issues/52
 public final class Metronome {
     public let timeInterval: TimeInterval
+    public let queue: DispatchQueue?
     
-    public init(timeInterval: TimeInterval) {
+    public init(
+        timeInterval: TimeInterval,
+        queue: DispatchQueue?
+    ) {
         self.timeInterval = timeInterval
+        self.queue = queue
     }
     
     private lazy var timer: DispatchSourceTimer = {
-        let t = DispatchSource.makeTimerSource()
+        let t = DispatchSource.makeTimerSource(queue: queue)
         t.schedule(deadline: .now() + self.timeInterval, repeating: self.timeInterval)
-        t.setEventHandler(handler: { [weak self] in
+        t.setEventHandler { [weak self] in
             guard let self = self else { return }
-            if let queue = self.queue {
-                queue.async {
-                    self.eventHandler?()
-                }
-            } else {
-                self.eventHandler?()
-            }
-        })
+            self.eventHandler?()
+        }
         return t
     }()
 
     public var eventHandler: (() -> Void)?
-    public var queue: DispatchQueue?
 
     private enum State {
         case suspended

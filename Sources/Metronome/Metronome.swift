@@ -9,10 +9,10 @@ import Foundation
 /// RepeatingTimer mimics the API of DispatchSourceTimer but in a way that prevents
 /// crashes that occur from calling resume multiple times on a timer that is
 /// already resumed (noted by https://github.com/SiftScience/sift-ios/issues/52
-final class Metronome {
-    let timeInterval: TimeInterval
+public final class Metronome {
+    public let timeInterval: TimeInterval
     
-    init(timeInterval: TimeInterval) {
+    public init(timeInterval: TimeInterval) {
         self.timeInterval = timeInterval
     }
     
@@ -32,8 +32,8 @@ final class Metronome {
         return t
     }()
 
-    var eventHandler: (() -> Void)?
-    var queue: DispatchQueue?
+    public var eventHandler: (() -> Void)?
+    public var queue: DispatchQueue?
 
     private enum State {
         case suspended
@@ -53,7 +53,7 @@ final class Metronome {
         eventHandler = nil
     }
 
-    func resume() {
+    public func resume() {
         if state == .resumed {
             return
         }
@@ -61,7 +61,7 @@ final class Metronome {
         timer.resume()
     }
 
-    func suspend() {
+    public func suspend() {
         if state == .suspended {
             return
         }

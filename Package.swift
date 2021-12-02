@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "Metronome",
+    platforms: [.iOS(.v12)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -21,8 +22,5 @@ let package = Package(
         .target(
             name: "Metronome",
             dependencies: []),
-        .testTarget(
-            name: "MetronomeTests",
-            dependencies: ["Metronome"]),
     ]
 )
